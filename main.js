@@ -413,6 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!state.gameId) return;
         
         const gameRef = database.ref('games/' + state.gameId);
+
         
         gameRef.update({
             board: Array(9).fill(null),
@@ -601,5 +602,56 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             toastEl.classList.remove('show');
         }, duration);
+    }
+});
+function joinGame(gameId) {
+    const gameRef = database.ref('games/' + gameId);
+
+    gameRef.once('value').then((snapshot) => {
+        const gameData = snapshot.val();
+        if (!gameData) {
+            showToast("Game ID not found. Please check and try again.");
+            return;
+        }
+
+        // Check if the game already has two players
+        if (gameData.playerX && gameData.playerO) {
+            showToast("This game is already full.");
+            return;
+        }
+
+        // Determine player's role (X or O)
+        let playerRole = gameData.playerX ? 'O' : 'X';
+
+        // Update database to add this player
+        gameRef.update({
+            [`player${playerRole}`]: state.myPlayerName, // Save the player's name
+            lastUpdated: firebase.database.ServerValue.TIMESTAMP
+        }).then(() => {
+            state.gameId = gameId;
+            state.myPlayer = playerRole;
+            showToast(`Joined game as Player ${playerRole}`);
+            startGame(); // Function to initialize the game UI
+        }).catch(error => {
+            console.error("Error joining game:", error);
+            showToast("Error joining game. Please try again.");
+        });
+    }).catch(error => {
+        console.error("Error fetching game:", error);
+        showToast("Error connecting to the server.");
+    });
+}
+document.getElementById("joinGameButton").addEventListener("click", () => {
+    const gameId = document.getElementById("gameIdInput").value.trim();
+    if (gameId) {
+        joinGame(gameId);
+    } else {
+        showToast("Please enter a valid Game ID.");
+    }
+});
+database.ref('games/' + state.gameId).on('value', (snapshot) => {
+    const gameData = snapshot.val();
+    if (gameData) {
+        updateUI(gameData);
     }
 });
