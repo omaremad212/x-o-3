@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Multiplayer Tic Tac Toe</title>
+    <link rel="stylesheet" href="./style.css">
+    
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Online Tic Tac Toe</h1>
+            <p class="subtitle">Play with friends in real-time</p>
+        </header>
+        
+        <div class="game-setup" id="game-setup">
+            <div class="form-group">
+                <label for="player-name">Your Name</label>
+                <input type="text" id="player-name" placeholder="Enter your name">
+            </div>
+            
+            <div class="form-group">
+                <label for="game-action">Select an option</label>
+                <select id="game-action">
+                    <option value="create">Create a new game</option>
+                    <option value="join">Join an existing game</option>
+                </select>
+            </div>
+            
+            <div class="form-group" id="game-id-group" style="display: none;">
+                <label for="game-id">Game ID</label>
+                <input type="text" id="game-id" placeholder="Enter game ID to join">
+            </div>
+            
+            <button class="btn-primary" id="start-btn">Start Game</button>
+        </div>
+        
+        <div class="game-container" id="game-container">
+            <div class="game-id-display" id="game-id-display">
+                <p class="id-share-text">Share this game ID with your friend:</p>
+                <div class="game-id-container">
+                    <div class="game-id" id="current-game-id">GAME-ID-HERE</div>
+                    <button class="copy-btn" id="copy-btn">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                <div class="share-options">
+                    <button class="share-btn" id="whatsapp-share">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </button>
+                    <button class="share-btn" id="sms-share">
+                        <i class="fas fa-sms"></i> SMS
+                    </button>
+                </div>
+            </div>
+            
+            <div class="game-info">
+                <div class="player-info" id="player-x">
+                    <div class="player-symbol x">X</div>
+                    <div class="player-info-content">
+                        <span class="player-name" id="player-x-name">Player X</span>
+                        <div class="waiting-loader" id="x-waiting" style="display: none;">
+                            <div class="loader"></div>
+                            <span>Waiting...</span>
+                        </div>
+                    </div>
+                    <span class="player-score" id="score-x">0</span>
+                </div>
+                
+                <div class="player-info active" id="player-o">
+                    <div class="player-symbol o">O</div>
+                    <div class="player-info-content">
+                        <span class="player-name" id="player-o-name">Player O</span>
+                        <div class="waiting-loader" id="o-waiting" style="display: none;">
+                            <div class="loader"></div>
+                            <span>Waiting...</span>
+                        </div>
+                    </div>
+                    <span class="player-score" id="score-o">0</span>
+                </div>
+            </div>
+            
+            <div class="game-status" id="game-status">
+                Waiting for another player...
+            </div>
+            
+            <div class="board" id="board">
+                <div class="cell" data-index="0"></div>
+                <div class="cell" data-index="1"></div>
+                <div class="cell" data-index="2"></div>
+                <div class="cell" data-index="3"></div>
+                <div class="cell" data-index="4"></div>
+                <div class="cell" data-index="5"></div>
+                <div class="cell" data-index="6"></div>
+                <div class="cell" data-index="7"></div>
+                <div class="cell" data-index="8"></div>
+            </div>
+            
+            <div class="controls">
+                <button class="btn-secondary" id="restart-btn">
+                    <i class="fas fa-sync-alt"></i> Restart Game
+                </button>
+                <button class="btn-danger" id="leave-btn">
+                    <i class="fas fa-sign-out-alt"></i> Leave Game
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    
+    
+   <script src="./main.js"></script>
+</body>
+</html>
